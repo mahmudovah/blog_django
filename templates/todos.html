@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+
+    <h2 class="mb-4 text-center">📝 Todo List</h2>
+
+    <!-- CREATE FORM -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label class="form-label">Vazifa</label>
+                    <textarea name="body" class="form-control" rows="3" required></textarea>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Davomiyligi</label>
+                        <input type="number" step="0.1" name="duration" class="form-control" required>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Vaqt turi</label>
+                        <select name="duration_type" class="form-select">
+                            <option value="min">Daqiqa</option>
+                            <option value="hour">Soat</option>
+                            <option value="day">Kun</option>
+                            <option value="week">Hafta</option>
+                            <option value="month">Oy</option>
+                            <option value="year">Yil</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Holati</label>
+                        <select name="status" class="form-select">
+                            <option value="new">Yangi</option>
+                            <option value="proccesing">Davom etmoqda</option>
+                            <option value="done">Bajarildi</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">
+                    Qo'shish
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- TODO LIST -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title mb-3">Barcha Vazifalar</h5>
+
+            {% for todo in todos %}
+                <div class="border rounded p-3 mb-3">
+
+                    <h6>{{ todo.body }}</h6>
+
+                    <p class="mb-1">
+                        ⏳ Davomiyligi: {{ todo.duration }} {{ todo.get_duration_type_display }}
+                    </p>
+
+                    <p class="mb-1">
+                        📌 Holati: {{ todo.get_status_display }}
+                    </p>
+
+                    <p class="mb-1">
+                        🕒 Yaratilgan: {{ todo.created_at|date:"d-m-Y H:i" }}
+                    </p>
+
+                    <p class="mb-1">
+                        ⏰ Tugash vaqti: {{ todo.duration_range|date:"d-m-Y H:i" }}
+                    </p>
+                    
+                </div>
+            {% empty %}
+                <p class="text-muted">Hozircha vazifalar yo‘q.</p>
+            {% endfor %}
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
