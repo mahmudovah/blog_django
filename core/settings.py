@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'post',
     'main',
     'todo',
+    'product',
 ]
 
 MIDDLEWARE = [
